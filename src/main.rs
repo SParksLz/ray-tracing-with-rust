@@ -34,7 +34,7 @@ fn create_pixel_buffer(width : u32, height : u32) -> String
         for x in 0..width{
             let r : f32 = x as f32 / width as f32;
             let g : f32 = (height - y) as f32 / height as f32;
-            let b : f32 = 0.2;
+            let b : f32 = 0.0;
 
             let ir = (255.99 * r ) as i32;
             let ig = (255.99 * g ) as i32;
@@ -53,8 +53,8 @@ fn create_pixel_buffer(width : u32, height : u32) -> String
 }
 
 fn main() {
-    let num_x = 100;
-    let num_y = 200;
+    let num_x = 200;
+    let num_y = 100;
 
     //println!("{}", result);
     let ppm_context = create_pixel_buffer(num_x, num_y);
