@@ -17,7 +17,7 @@ impl vec3{
     }
 
     pub fn unit_vector(vec : Self) -> Self{
-        vec / Self::create_with_scalar(vec.length())
+        vec / vec.length()
     }
 }
 
@@ -76,6 +76,30 @@ impl ops::Sub for vec3{
         }
     }
 }
+// / * with scalar
+
+impl ops::Mul<f64> for vec3{
+    type Output = Self;
+    fn mul(self, other: f64) -> Self::Output {
+        Self{
+            v0 : self.v0 * other,
+            v1 : self.v1 * other,
+            v2 : self.v2 * other,
+        }
+    }
+}
+
+impl ops::Div<f64> for vec3{
+    type Output = Self;
+    fn div(self, other: f64) -> Self::Output {
+        Self{
+            v0 : self.v0 / other,
+            v1 : self.v1 / other,
+            v2 : self.v2 / other,
+        }
+    }
+}
+
 
 
 // / * are for colors
@@ -89,6 +113,7 @@ impl ops::Mul for vec3{
         }
     }
 }
+
 impl ops::Div for vec3{
     type Output = Self;
     fn div(self, other: Self) -> Self::Output {
@@ -100,6 +125,8 @@ impl ops::Div for vec3{
     }
 
 }
+
+
 
 
 impl vec3{
