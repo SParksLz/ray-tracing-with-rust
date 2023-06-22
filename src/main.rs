@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::{ErrorKind, Write};
 
+pub mod lal;
+
 fn write_to(fileName : &str, bytes : &[u8]) -> std::io::Result<()>
 {
     let mut ppm_file = File::open(fileName).unwrap_or_else(|error| {
@@ -32,13 +34,17 @@ fn create_pixel_buffer(width : u32, height : u32) -> String
 
     for y in 0..height{
         for x in 0..width{
-            let r : f32 = x as f32 / width as f32;
-            let g : f32 = (height - y) as f32 / height as f32;
-            let b : f32 = 0.0;
+            // let r : f32 = x as f32 / width as f32;
+            // let g : f32 = (height - y) as f32 / height as f32;
+            // let b : f32 = 0.0;
+            let col = lal::vec3::create(
+                x as f64 / width as f64, 
+                (height - y) as f64 / height as f64,
+                0.0);
 
-            let ir = (255.99 * r ) as i32;
-            let ig = (255.99 * g ) as i32;
-            let ib = (255.99 * b ) as i32;
+            let ir = (255.99 * col.r() ) as i32;
+            let ig = (255.99 * col.g() ) as i32;
+            let ib = (255.99 * col.b() ) as i32;
             //println!("{} {} {}", ir, ig, ib);
             temp.push_str(&ir.to_string());
             temp.push_str(" ");
@@ -55,6 +61,16 @@ fn create_pixel_buffer(width : u32, height : u32) -> String
 fn main() {
     let num_x = 200;
     let num_y = 100;
+
+    // let mut test_aaa = lal::vec3::create(11.11, 30.5, 11.11);
+
+    // let test_bbb = lal::vec3::create(23.11, 34.656, 24.989);
+
+    // let unit_vector_test = lal::vec3::unit_vector(test_aaa);
+
+    // println!("cross result is {:#?}", unit_vector_test);
+
+
 
     //println!("{}", result);
     let ppm_context = create_pixel_buffer(num_x, num_y);
