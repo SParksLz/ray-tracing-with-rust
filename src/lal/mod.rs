@@ -56,6 +56,18 @@ impl ops::Add for vec3{
         }
     }
 }
+
+impl ops::Add<f64> for vec3{
+    type Output = Self;
+    fn add(self, other : f64) -> Self::Output{
+        Self{
+            v0 : self.v0 + other,
+            v1 : self.v1 + other,
+            v2 : self.v2 + other,
+        }
+    }
+}
+
 impl ops::Neg for vec3{
     type Output = Self;
     fn neg(self) -> Self::Output {
@@ -89,6 +101,17 @@ impl ops::Mul<f64> for vec3{
     }
 }
 
+impl ops::Mul<vec3> for f64{
+    type Output = vec3;
+    fn mul(self, other: vec3) -> Self::Output{
+        vec3{
+            v0 : self * other.v0,
+            v1 : self * other.v1,
+            v2 : self * other.v2,
+        }
+    }
+}
+
 impl ops::Div<f64> for vec3{
     type Output = Self;
     fn div(self, other: f64) -> Self::Output {
@@ -99,6 +122,17 @@ impl ops::Div<f64> for vec3{
         }
     }
 }
+impl ops::Div<vec3> for f64{
+    type Output = vec3;
+    fn div(self, other: vec3) -> Self::Output{
+        vec3{
+            v0 : self / other.v0,
+            v1 : self / other.v1,
+            v2 : self / other.v2,
+        }
+    }
+}
+
 
 
 

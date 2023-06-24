@@ -22,11 +22,36 @@ fn write_to(fileName : &str, bytes : &[u8]) -> std::io::Result<()>
     Ok(())
 }
 
-fn color(r : ray::ray_basic) -> lal::vec3{
-    let unit_direction = lal::vec3::unit_vector(r.direction());
-    let t = 0.5 * (unit_direction.y() + 1.0);
-    lal::vec3::create(1.0, 1.0, 1.0) * (1.0 - t) + lal::vec3::create(0.5, 0.7, 1.0) * t
+fn hit_sphere(center : lal::vec3, radius : f64, r : &ray::ray_basic) -> bool
+{
+    let oc = r.origin() - center;
+    let a = r.direction().dot(r.direction());
+    let b = 2.0 * oc.dot(r.direction());
+    let c = oc.dot(oc) - radius * radius;
+    let discriminant = b * b - 4.0 * a * c;
+    discriminant > 0.0
 }
+
+
+fn color(r : &ray::ray_basic) -> lal::vec3{
+    let a = hit_sphere(lal::vec3::create(0.0, 0.0, -1.0), 0.5, r);
+    if a {
+        return lal::vec3::create(1.0, 0.0, 0.0);
+    }
+    else {
+        let unit_direction = lal::vec3::unit_vector(r.direction());
+        let t = 0.5 * (unit_direction.y() + 1.0);
+        return (1.0 - t) * lal::vec3::create(1.0, 1.0, 1.0) + t * lal::vec3::create(0.5, 0.7, 1.0);
+    }
+
+
+}
+
+// fn color(r : ray::ray_basic) -> lal::vec3{
+//     let unit_direction = lal::vec3::unit_vector(r.direction());
+//     let t = 0.5 * (unit_direction.y() + 1.0);
+//     lal::vec3::create(1.0, 1.0, 1.0) * (1.0 - t) + lal::vec3::create(0.5, 0.7, 1.0) * t
+// }
 
 
 //The pixels are written out in rows with pixels left to right.
@@ -57,7 +82,7 @@ fn create_pixel_buffer(width : u32, height : u32) -> String
             let ray_temp = ray::ray_basic::create(origin, 
                 lower_left_corner + horizontal * (x as f64) + vertical * ((height - y) as f64));
 
-            let color_result = color(ray_temp);
+            let color_result = color(&ray_temp);
 
             let ir = (255.99 * color_result.r() ) as i32;
             let ig = (255.99 * color_result.g() ) as i32;
@@ -79,13 +104,15 @@ fn main() {
     let num_x = 200;
     let num_y = 100;
 
-    // let mut test_aaa = lal::vec3::create(11.11, 30.5, 11.11);
+    let mut test_aaa = lal::vec3::create(11.11, 30.5, 11.11);
+    let aaa = 3.14;
 
     // let test_bbb = lal::vec3::create(23.11, 34.656, 24.989);
 
     // let unit_vector_test = lal::vec3::unit_vector(test_aaa);
 
     // println!("cross result is {:#?}", unit_vector_test);
+
 
 
 
